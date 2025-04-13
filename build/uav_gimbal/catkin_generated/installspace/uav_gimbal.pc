@@ -1,0 +1,8 @@
+prefix=/home/user/catkin_ws/install
+
+Name: uav_gimbal
+Description: Description of uav_gimbal
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

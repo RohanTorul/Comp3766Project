@@ -1,0 +1,13 @@
+<launch>
+  <!-- Load the robot description -->
+  <param name="robot_description" command="$(find uav_gimbal)/robot_description/gimbal.sdf" />
+
+  <!-- Load controllers -->
+  <rosparam file="$(find uav_gimbal)/config/controllers.yaml" command="load" />
+
+  <!-- Spawn the robot in Gazebo -->
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model gimbal" />
+
+  <!-- Start controller spawner -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" args="joint_state_controller position_controllers" />
+</launch>

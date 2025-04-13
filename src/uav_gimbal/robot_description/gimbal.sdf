@@ -1,0 +1,202 @@
+<sdf version="1.6">
+<model name="robot" canonical_link='map'>
+  <static>false</static>
+  <pose relative_to='world'>0 0 0 0 0 0</pose>
+  <link name="map"></link>
+  <link name="base_link">
+    <pose relative_to='map'>0 0 0 0 0 0</pose>
+    <visual name='base_link visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.5</radius>
+          <length>1</length>
+        </cylinder>
+      </geometry>
+      <material>
+         <ambient>0.2917706498067336 0.407240211891531 0.08021982030622662 1</ambient>
+         <diffuse>0.2917706498067336 0.407240211891531 0.08021982030622662 1</diffuse>
+         <specular>0.1 0.1 0.1 1</specular>
+         <emissive>0 0 0 1</emissive>
+       </material>
+    </visual>
+    <collision name='base_link collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.5</radius>
+          <length>1</length>
+        </cylinder>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass>1</mass>
+      <inertia>
+        <ixx>0.3333333333333333</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>0.5</iyy>
+        <iyz>0</iyz>
+        <izz>0.3333333333333333</izz>
+      </inertia>
+    </inertial>
+  </link>
+  <joint name="map_to_base_link" type="fixed">
+    <pose relative_to='base_link'>0 0 0 0 0 0 </pose>
+    <parent>map</parent>
+    <child>base_link</child>
+  </joint>
+  <link name="cylinder1">
+    <pose relative_to='base_link'>0 0 -1 0 0 0</pose>
+    <visual name='cylinder1 visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.5</radius>
+          <length>1</length>
+        </cylinder>
+      </geometry>
+      <material>
+         <ambient>0.05286064701616472 0.46778379610254284 0.2874408377161099 1</ambient>
+         <diffuse>0.05286064701616472 0.46778379610254284 0.2874408377161099 1</diffuse>
+         <specular>0.1 0.1 0.1 1</specular>
+         <emissive>0 0 0 1</emissive>
+       </material>
+    </visual>
+    <collision name='cylinder1 collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.5</radius>
+          <length>1</length>
+        </cylinder>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass>1</mass>
+      <inertia>
+        <ixx>0.3333333333333333</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>0.5</iyy>
+        <iyz>0</iyz>
+        <izz>0.3333333333333333</izz>
+      </inertia>
+    </inertial>
+  </link>
+  <joint name="base_link_to_cylinder1" type="revolute">
+    <pose relative_to='cylinder1'>0 0 0 0 0 0 </pose>
+    <parent>base_link</parent>
+    <child>cylinder1</child>
+    <axis>
+        <xyz expressed_in='cylinder1'>0 0 1</xyz>
+    </axis>
+  </joint>
+  <link name="cylinder2">
+    <pose relative_to='cylinder1'>1 0 0 1.5707963267948963 0 0</pose>
+    <visual name='cylinder2 visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.5</radius>
+          <length>1</length>
+        </cylinder>
+      </geometry>
+      <material>
+         <ambient>0.05612849004241121 0.8962693533719567 0.06847816983662762 1</ambient>
+         <diffuse>0.05612849004241121 0.8962693533719567 0.06847816983662762 1</diffuse>
+         <specular>0.1 0.1 0.1 1</specular>
+         <emissive>0 0 0 1</emissive>
+       </material>
+    </visual>
+    <collision name='cylinder2 collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.5</radius>
+          <length>1</length>
+        </cylinder>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass>1</mass>
+      <inertia>
+        <ixx>0.3333333333333333</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>0.5</iyy>
+        <iyz>0</iyz>
+        <izz>0.3333333333333333</izz>
+      </inertia>
+    </inertial>
+  </link>
+  <joint name="cylinder1_to_cylinder2" type="revolute">
+    <pose relative_to='cylinder2'>0 0 0 0 0 0 </pose>
+    <parent>cylinder1</parent>
+    <child>cylinder2</child>
+    <axis>
+        <xyz expressed_in='cylinder2'>0 0 1</xyz>
+        <limit>            <lower>-1.57</lower>            <upper>1.57</upper>        </limit>
+    </axis>
+  </joint>
+  <link name="cylinder3">
+    <pose relative_to='cylinder2'>1 0 0 -1.5707963267948966 2.220446049250313e-16 -1.5707963267948963</pose>
+    <visual name='cylinder3 visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.5</radius>
+          <length>1</length>
+        </cylinder>
+      </geometry>
+      <material>
+         <ambient>0.05286064701616472 0.012983032338510335 0.02732089163382382 1</ambient>
+         <diffuse>0.05286064701616472 0.012983032338510335 0.02732089163382382 1</diffuse>
+         <specular>0.1 0.1 0.1 1</specular>
+         <emissive>0 0 0 1</emissive>
+       </material>
+    </visual>
+    <collision name='cylinder3 collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.5</radius>
+          <length>1</length>
+        </cylinder>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass>1</mass>
+      <inertia>
+        <ixx>0.3333333333333333</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>0.5</iyy>
+        <iyz>0</iyz>
+        <izz>0.3333333333333333</izz>
+      </inertia>
+    </inertial>
+  </link>
+  <joint name="cylinder2_to_cylinder3" type="revolute">
+    <pose relative_to='cylinder3'>0 0 0 0 0 0 </pose>
+    <parent>cylinder2</parent>
+    <child>cylinder3</child>
+    <axis>
+        <xyz expressed_in='cylinder3'>0 0 1</xyz>
+    </axis>
+  </joint>
+</model>
+    <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+        <ros>
+            <remapping>~/out:=/joint_states</remapping>
+        </ros>
+        <update_rate>5</update_rate>
+       <joint_name>base_link_to_cylinder1</joint_name>
+       <joint_name>cylinder1_to_cylinder2</joint_name>
+       <joint_name>cylinder2_to_cylinder3</joint_name>
+    </plugin>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/</robotNamespace>
+      <robotParam>robot_description</robotParam>
+    </plugin>
+</sdf>

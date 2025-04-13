@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Arguments -->
+  <arg name="sdf_file" default="$(find uav_gimbal)/robot_description/gimbal.sdf" doc="Path to the SDF file to load"/>
+  <arg name="model_name" default="bimbal" doc="Name to give the model in Gazebo"/>
+  <arg name="x" default="0.0" doc="X position to spawn the model at"/>
+  <arg name="y" default="0.0" doc="Y position to spawn the model at"/>
+  <arg name="z" default="0.0" doc="Z position to spawn the model at"/>
+  <arg name="roll" default="0.0" doc="Roll orientation to spawn the model with"/>
+  <arg name="pitch" default="0.0" doc="Pitch orientation to spawn the model with"/>
+  <arg name="yaw" default="0.0" doc="Yaw orientation to spawn the model with"/>
+
+  <!-- Start Gazebo -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="worlds/empty.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- Spawn SDF model -->
+  <node name="spawn_sdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-file $(arg sdf_file) -sdf -model $(arg model_name) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+
+  <!-- Load Controllers -->
+  <rosparam file="$(find uav_gimbal)/launch/controllers.yaml" command="load" />
+  <include file="$(find uav_gimbal)/launch/controllers.launch" />
+</launch>

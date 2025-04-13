@@ -1,0 +1,24 @@
+<launch>
+  <!-- Launch file parameters -->
+  <arg name="model" default="$(find uav_gimbal)/robot_description/gimbal.urdf"/>
+  <arg name="gui" default="false" />
+  <arg name="rvizconfig" default="$(find uav_gimbal)/robot_description/rviz_viewer.rviz" />
+  
+  <!-- Parameter server for robot description -->
+  <param name="robot_description" textfile="$(arg model)" />
+  
+     <!-- Joint state publisher -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="false"/>
+        <rosparam param="source_list">["/gimbal_joint_states"]</rosparam>
+    </node>
+  <!-- Robot state publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="robot_description" textfile="$(arg model)" />
+  </node>
+  
+  <!-- RViz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true">
+    <param name="use_sim_time" value="false" />
+  </node>
+</launch>

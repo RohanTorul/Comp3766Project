@@ -1,0 +1,17 @@
+uav_gimbal/joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
+
+uav_gimbal/joint_trajectory_controller:
+  type: position_controllers/JointTrajectoryController
+  joints:
+    - base_link_to_cube1
+    - cube1_to_cube2
+    - cube2_to_cube3
+  gains:
+    base_link_to_cube1: {p: 1000, i: 1, d: 10}
+    cube1_to_cube2: {p: 1000, i: 1, d: 10}
+    cube2_to_cube3: {p: 1000, i: 1, d: 10}
+  constraints:
+    goal_time: 0.2
+    stopped_velocity_tolerance: 0.01

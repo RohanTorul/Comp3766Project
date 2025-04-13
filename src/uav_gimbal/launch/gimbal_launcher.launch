@@ -1,0 +1,71 @@
+<launch>
+    <!-- Configuration Parameters -->
+    <arg name="publish_rate" default="100" />
+    <arg name="start_rviz" default="true" />
+    <arg name="start_gazebo" default="true" />
+    <arg name="use_sim_time" default="false" />
+    <arg name="debug" default="false" />
+    <arg name="fixed_frame" default="base_link" />
+
+    <!-- 1. Configuration Publisher (unchanged) -->
+    <node name="gimbal_publisher" pkg="uav_gimbal" type="config_publisher.py" output="screen">
+        <param name="publish_rate" value="$(arg publish_rate)" />
+    </node>
+
+    <!-- 2. RViz Visualization (unchanged) -->
+    <group if="$(arg start_rviz)">
+        <!-- Load URDF -->
+        <param name="robot_description" textfile="$(find uav_gimbal)/robot_description/gimbal.urdf" />
+        
+        <!-- Robot State Publisher -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+            <param name="publish_frequency" value="30.0"/>
+            <param name="tf_prefix" value=""/>
+        </node>
+
+        <!-- RViz Config Subscriber -->
+        <node name="rviz_controller" pkg="uav_gimbal" type="config_subscriber.py" output="screen">
+            <remap from="robot_config" to="rviz_config" />
+        </node>
+        
+        <!-- Launch RViz with pre-saved config and fixed frame -->
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find uav_gimbal)/robot_description/gimbal.rviz">
+            <param name="fixed_frame" value="$(arg fixed_frame)" />
+        </node>
+   </group>
+
+    <!-- 3. Gazebo Simulation with ZERO GRAVITY -->
+    <group if="$(arg start_gazebo)">
+        <param name="/use_sim_time" value="true" />
+        
+        <!-- Start Gazebo with paused=true to ensure gravity takes effect -->
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+            <arg name="paused" value="true"/> <!-- Changed to paused -->
+            <arg name="gui" value="true"/>
+            <arg name="world_name" value="worlds/empty.world"/>
+            <arg name="extra_gazebo_args" value="--verbose"/> <!-- Added for debugging -->
+        </include>
+        
+       
+        
+        <!-- ALL OTHER GAZEBO NODES REMAIN EXACTLY THE SAME -->
+        <node name="spawn_gimbal" pkg="gazebo_ros" type="spawn_model" 
+              args="-file $(find uav_gimbal)/robot_description/gimbal.sdf -sdf -model uav_gimbal -x 0 -y 0 -z 0.1"
+              respawn="false" output="screen" />
+        
+        <node name="gazebo_controller" pkg="uav_gimbal" type="gazebo_config_subscriber.py" output="screen">
+            <remap from="robot_config" to="gazebo_config" />
+        </node>
+        
+        <rosparam file="$(find uav_gimbal)/scripts/gazebo_controllers.yaml" command="load"/>
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" 
+              args="joint_state_controller joint_trajectory_controller"
+              output="screen" />
+    </group>
+
+    <!-- 4. Topic Distribution (unchanged) -->
+    <node name="config_broadcaster" pkg="topic_tools" type="relay" 
+          args="robot_config rviz_config" if="$(arg start_rviz)" />
+    <node name="config_broadcaster_gazebo" pkg="topic_tools" type="relay" 
+          args="robot_config gazebo_config" if="$(arg start_gazebo)" />
+</launch>
