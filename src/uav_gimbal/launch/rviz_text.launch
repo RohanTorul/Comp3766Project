@@ -3,13 +3,13 @@
     <arg name="fixed_frame" default="base_link" />  <!-- Change this to your robot's root link -->
     
     <!-- 1. Load URDF -->
-    <param name="robot_description" textfile="$(find uav_gimbal)/robot_description/gimbal.urdf" />
+    <param name="robot_description" textfile="$(find uav_gimbal)/robot_description/uavGimbal.urdf" />
     
     <!-- 2. Start Robot State Publisher -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     
     <!-- 3. Start Joint State Publisher -->
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" gui="true" />
     
     <!-- 4. Launch RViz with correct fixed frame -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find uav_gimbal)/robot_description/robot.rviz">

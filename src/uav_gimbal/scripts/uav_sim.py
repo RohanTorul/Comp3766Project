@@ -61,7 +61,7 @@ class FlockingSpots:
         dy = self.uav_pos[1] - cluster_center[1]
         ground_distance = math.sqrt(dx**2 + dy**2)
         
-        # Calculate 3D distance (including altitude)
+        # Calculate 3D distance (including altitude) -Pythagoras the goat
         distance_3d = math.sqrt(ground_distance**2 + self.uav_altitude**2)
         
         # Calculate angle of elevation (in degrees)
@@ -359,6 +359,7 @@ def main():
         cv2.imshow(window_name, frame)
 
         ros_interface.update_metrics(
+            heading=flock.uav_heading,
             elevation=flock.uav_elevation,
             distance=flock.uav_distance,
             bearing=flock.uav_bearing,

@@ -19,6 +19,7 @@ class ROS_interface:
         self.bearing = 0.0        # Bearing in degrees (-180 to 180)
         self.bank_angle = 0.0     # Bank angle in degrees
         self.pitch_angle = 0.0    # Pitch angle in degrees
+        self.heading = 0.0
         
         # Gimbal angles (Euler angles in radians)
         self.current_theta0 = 0.0  # Rotation around z-axis (yaw)
@@ -36,7 +37,7 @@ class ROS_interface:
         self.integral_error = [0.0, 0.0, 0.0]
         self.last_error = [0.0, 0.0, 0.0]
         
-    def update_metrics(self, elevation, distance, bearing, bank_angle, pitch_angle):
+    def update_metrics(self,heading, elevation, distance, bearing, bank_angle, pitch_angle):
         """
         Update the navigation metrics
         :param elevation: Angle in degrees (positive = above horizon)
@@ -45,6 +46,9 @@ class ROS_interface:
         :param bank_angle: Bank angle in degrees
         :param pitch_angle: Pitch angle in degrees
         """
+        #just for UAV orientation
+        self.heading = heading
+
         self.elevation = elevation
         self.distance = distance
         self.bearing = bearing
@@ -56,10 +60,12 @@ class ROS_interface:
         Callback for current joint states (gimbal angles)
         """
         try:
-            # Assuming joint names are 'gimbal_yaw', 'gimbal_pitch', 'gimbal_roll'
-            self.current_theta0 = msg.position[msg.name.index('base_link_to_cylinder1')]
-            self.current_theta1 = msg.position[msg.name.index('cylinder1_to_cylinder2')]
-            self.current_theta2 = msg.position[msg.name.index('cylinder2_to_cylinder3')]
+            #extracting uav heading from joint base_link_to_uav_bearing
+            self.heading = msg.position[msg.name.index('base_link_to_uav_bearing')]
+            # Extract gimbal angles from joint states using joint names
+            self.current_theta0 = msg.position[msg.name.index('uav_pitching_to_cylinder0')]
+            self.current_theta1 = msg.position[msg.name.index('cylinder0_to_cylinder1')]
+            self.current_theta2 = msg.position[msg.name.index('cylinder1_to_cylinder2')]
         except ValueError:
             rospy.logwarn("Gimbal joint names not found in joint_states")
             
@@ -78,8 +84,8 @@ class ROS_interface:
         :param theta2: Angle in radians for gimbal 2 (x-axis)
         """
         gimbal_cmd = JointState()
-        gimbal_cmd.name = ['base_link_to_cylinder1', 'cylinder1_to_cylinder2', 'cylinder2_to_cylinder3']
-        gimbal_cmd.position = [target_theta0, target_theta1, target_theta2]
+        gimbal_cmd.name = ['base_link_to_uav_bearing','uav_bearing_to_uav_banking','uav_banking_to_uav_pitching','uav_pitching_to_cylinder0', 'cylinder0_to_cylinder1', 'cylinder1_to_cylinder2']
+        gimbal_cmd.position = [math.radians(self.heading),math.radians(self.bank_angle),math.radians(self.pitch_angle),target_theta0, target_theta1, target_theta2]
         self.gimbal_pub.publish(gimbal_cmd)
         
     def calculate_current_orientation(self):#TODO

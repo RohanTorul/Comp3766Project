@@ -1,6 +1,6 @@
 <launch>
   <!-- Launch file parameters -->
-  <arg name="model" default="$(find uav_gimbal)/robot_description/gimbal.urdf"/>
+  <arg name="model" default="$(find uav_gimbal)/robot_description/uavGimbal.urdf"/>
   <arg name="gui" default="false" />
   <arg name="rvizconfig" default="$(find uav_gimbal)/robot_description/rviz_viewer.rviz" />
   
