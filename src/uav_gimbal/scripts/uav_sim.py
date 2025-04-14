@@ -24,6 +24,10 @@ class FlockingSpots:
         self.uav_distance = 0  # UAV distance to target
         self.uav_bearing = 0  # UAV bearing to target
         self.uav_size = 15  # Size of UAV marker
+        self.auto_move = False  # Add this flag
+        self.move_timer = 0
+        self.move_duration = 0
+        self.target_pos = None  # For random movement
         self.initialize_spots()
         
     def initialize_spots(self):
@@ -71,12 +75,12 @@ class FlockingSpots:
         # Calculate bearing to target (0-360 degrees, 0 = right, 90 = up)
         bearing = math.degrees(math.atan2(cluster_center[1] - self.uav_pos[1], 
                                       cluster_center[0] - self.uav_pos[0]))
-        bearing = (bearing + 360) % 360  # Normalize to 0-360
+        #bearing = (bearing + 360) % 360  # Normalize to 0-360
         
         # Calculate relative angle between UAV heading and target
-        relative_angle = (bearing - self.uav_heading + 360) % 360
-        if relative_angle > 180:
-            relative_angle -= 360  # Shows left/right more intuitively
+        relative_angle = bearing#(bearing - self.uav_heading + 360) % 360
+        # if relative_angle > 180:
+        #     relative_angle -= 360  # Shows left/right more intuitively
         
         return angle_deg, distance_3d, relative_angle
     
@@ -339,6 +343,25 @@ class FlockingSpots:
                    (10, self.height-20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1)
         
         return img
+    def random_uav_movement(self):
+
+        # Random position change (-10 to +10 pixels)
+        self.uav_pos = (
+            self.uav_pos[0] + random.randint(-10, 10),
+            self.uav_pos[1] + random.randint(-10, 10)
+        )
+        
+        # Random altitude change (-5 to +5 pixels)
+        self.uav_altitude = max(10, self.uav_altitude + random.randint(-5, 5))
+        
+        # Random heading change (-15 to +15 degrees)
+        self.uav_heading = (self.uav_heading + random.randint(-15, 15)) % 360
+        
+        # Small random bank/pitch changes (-3 to +3 degrees)
+        self.uav_bank_angle = max(-45, min(45, self.uav_bank_angle + random.randint(-3, 3)))
+        self.uav_pitch_angle = max(-20, min(20, self.uav_pitch_angle + random.randint(-3, 3)))
+
+
 
 def main():
     flock = FlockingSpots(width=800, height=600, num_spots=10)
@@ -354,6 +377,8 @@ def main():
 
 
     while True:
+        if flock.auto_move:
+            flock.random_uav_movement()
         flock.update_spots()
         frame = flock.draw_spots()
         cv2.imshow(window_name, frame)
@@ -397,7 +422,15 @@ def main():
             flock.uav_pitch_angle = max(-45,min(45, flock.uav_pitch_angle - 1))
         elif key == ord('l'):  # Rotate clockwise
             flock.uav_pitch_angle = max(-45,min(45, flock.uav_pitch_angle + 1))
+        elif key == ord(' '):  # SPACE to toggle auto-movement
+            flock.auto_move = not flock.auto_move
+            print(f"Auto movement {'enabled' if flock.auto_move else 'disabled'}")
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     main()
+
+
+
+
+# Add this method to the FlockingSpots class

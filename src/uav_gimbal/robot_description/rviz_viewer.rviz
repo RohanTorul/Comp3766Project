@@ -9,15 +9,6 @@ Panels:
         - /Grid1
         - /RobotModel1
         - /RobotModel1/Links1
-        - /RobotModel1/Links1/base_link1
-        - /RobotModel1/Links1/cube11
-        - /RobotModel1/Links1/cylinder01
-        - /RobotModel1/Links1/cylinder11
-        - /RobotModel1/Links1/cylinder21
-        - /RobotModel1/Links1/map1
-        - /RobotModel1/Links1/uav_banking1
-        - /RobotModel1/Links1/uav_bearing1
-        - /RobotModel1/Links1/uav_pitching1
       Splitter Ratio: 0.5
     Tree Height: 581
   - Class: rviz/Selection
@@ -65,57 +56,57 @@ Visualization Manager:
       Value: true
     - Alpha: 1
       Class: rviz/RobotModel
-      Collision Enabled: false
+      Collision Enabled: true
       Enabled: true
       Links:
         All Links Enabled: true
         Expand Joint Details: false
-        Expand Link Details: true
+        Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
         base_link:
           Alpha: 1
-          Show Axes: true
-          Show Trail: true
+          Show Axes: false
+          Show Trail: false
           Value: true
         cube1:
           Alpha: 1
-          Show Axes: true
-          Show Trail: true
+          Show Axes: false
+          Show Trail: false
           Value: true
         cylinder0:
           Alpha: 1
-          Show Axes: true
-          Show Trail: true
+          Show Axes: false
+          Show Trail: false
           Value: true
         cylinder1:
           Alpha: 1
-          Show Axes: true
-          Show Trail: true
+          Show Axes: false
+          Show Trail: false
           Value: true
         cylinder2:
           Alpha: 1
-          Show Axes: true
-          Show Trail: true
+          Show Axes: false
+          Show Trail: false
           Value: true
         map:
           Alpha: 1
-          Show Axes: true
-          Show Trail: true
+          Show Axes: false
+          Show Trail: false
         uav_banking:
           Alpha: 1
-          Show Axes: true
-          Show Trail: true
+          Show Axes: false
+          Show Trail: false
           Value: true
         uav_bearing:
           Alpha: 1
-          Show Axes: true
-          Show Trail: true
+          Show Axes: false
+          Show Trail: false
           Value: true
         uav_pitching:
           Alpha: 1
-          Show Axes: true
-          Show Trail: true
+          Show Axes: false
+          Show Trail: false
           Value: true
       Name: RobotModel
       Robot Description: robot_description
@@ -151,7 +142,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 15.268782615661621
+      Distance: 14.049280166625977
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -167,9 +158,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6353984475135803
+      Pitch: 0.6853981018066406
       Target Frame: <Fixed Frame>
-      Yaw: 6.07358455657959
+      Yaw: 6.198583126068115
     Saved: ~
 Window Geometry:
   Displays:
@@ -187,5 +178,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 2345
-  Y: 31
+  X: 68
+  Y: 91
