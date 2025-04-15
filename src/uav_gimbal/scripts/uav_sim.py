@@ -431,6 +431,3 @@ if __name__ == "__main__":
     main()
 
 
-
-
-# Add this method to the FlockingSpots class
