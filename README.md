@@ -5,7 +5,7 @@
 - To source type source ~/.bashrc
 - to run Rviz type roslaunch uav_gimbal rviz_viewer.launch
 - to run the uav and CV Simulation, type rosrun uav_gimbal uav_sim.py 
-- If you want to edit the files you have to go to ~/catkin_ws/src/uav_gimbal
+- If you want to edit the files you have to go to ~/catkin_ws/src/uav_gimbal (here it is just src/uav_gimbal)
 - there you will see:
   - launch: contains launch files. The only one that is relevant is rviz_viewer.launch
   - scripts: contains python scripts(also "nodes"). The relevant ones are uav_comms_interface.py and uav_sim.py
