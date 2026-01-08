@@ -1,3 +1,4 @@
+Made for 2025 CS3766  at Memorial University of Newfoundland and Labrador
 # HI!
 - Project made on Docker for ROS1 Noetic
 - All necessary packages should be in this repository.
